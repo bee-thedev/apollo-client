@@ -13,14 +13,14 @@ import {
 
 // use for Pub/Sub (Subscription)
 const wsLink = new WebSocketLink({
-    // uri: 'ws://localhost:3000/graphql',
-    // options: {
-    //     reconnect: true,
+    uri: process.env.REACT_APP_GRAPHQL_LOCAL_URI,
+    options: {
+        reconnect: true,
         // connectionParams: {
         //     authToken: '<authToken>',
         // }
-    }
-);
+    }});
+
 const httpLink = new HttpLink({
     uri: process.env.REACT_APP_GRAPHQL_GITHUB_URI,
 });
@@ -29,7 +29,7 @@ const httpLink = new HttpLink({
 const errorLink = onError(({ graphqlErrors, networkErrors }) => {
     if (graphqlErrors) {
         graphqlErrors.map(({ message, location, path }) => {
-            alert('GraphQL Error: ' + message);
+            alert('GraphQL Error: ' + message + location + path);
         });
     }
     

@@ -1,20 +1,21 @@
+import React from "react";
 import { useEffect, useState } from 'react'
 import './App.css';
 
-import { useQuery, gql } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { LOAD_USERS } from './GraphQL/Queries'
 
 import { useMutation } from '@apollo/client'
 import { CREATE_USER_MUTATION } from './GraphQL/Mutations'
 
 import { useSubscription } from '@apollo/client'
-import { SUBSCRIBE_USER_ADDED } from './GraphQL/Subscriptions'
+import { SUBSCRIBE_USER_ADDED } from "./GraphQL/Subscriptions";
 
 
 function App() {
 
-  const [users, setUsers] = useState([])
-  const [form, setForm] = useState({ name: 'aaa', age: 0, married: false })
+  const [users, setUsers] = useState([]);
+  const [form, setForm] = useState({ name: 'aaa', age: 0, married: false });
 
   // add user using GraphQl Mutation 
   const [createUser, { error: mutationErr }] = useMutation(CREATE_USER_MUTATION)
@@ -37,15 +38,17 @@ function App() {
   useEffect(() => {
     userSubsDasta && console.log('userSubsDasta: ', userSubsDasta)
     if (userSubsDasta) {
-      const newAddedUser = userSubsDasta['newUser']
-      const allusers = [...users]     // old users
+      const newAddedUser = userSubsDasta['newUser'];
+      const allusers = [...users];     // old users
       allusers.unshift(newAddedUser); // push
       setUsers(allusers)      // re-render
     }
     // logic (todo)
-  }, [userSubsDasta])
+  }, [userSubsDasta]);
 
-  // GraphQL Querry
+    
+
+  // GraphQL Query
   const { error, loading, data } = useQuery(LOAD_USERS)
   useEffect(() => {
     console.log('dataaaa', data)
@@ -61,7 +64,7 @@ function App() {
 
   return (
     <div className="App">
-      <form onChange={({ target }) => {
+       <form onChange={({ target }) => {
         const obj = { ...form };
         obj[target.name] = (target.name === 'married') ? target.checked : target.value
         setForm(obj)
